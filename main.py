@@ -28,10 +28,7 @@ class SporkInstance:
         try:
             usernameField = WebDriverWait(self.driver, 10).until(ec.presence_of_element_located((By.NAME, "username")))
             usernameField.send_keys(self.credentials.get("username"))
-        except (exceptions.NoSuchElementException, exceptions.TimeoutException):
-            self.driver.quit()
-
-        try:
+            
             passwordField = WebDriverWait(self.driver, 10).until(ec.presence_of_element_located((By.NAME, "password")))
             passwordField.send_keys(self.credentials.get("password"))
             passwordField.send_keys(Keys.ENTER)
