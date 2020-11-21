@@ -39,8 +39,9 @@ class SporkInstance:
 
     def click_join_button(self):
         try:
-            joinButton = WebDriverWait(self.driver, 10).until(ec.presence_of_element_located((By.CSS_SELECTOR, 'button.ui.green.compact.button')))
-            joinButton.click()
+            joinButtons = WebDriverWait(self.driver, 10).until(ec.presence_of_all_elements_located((By.CSS_SELECTOR, 'button.ui.green.compact.button')))
+            for i in joinButtons:
+                i.click()
         except (exceptions.NoSuchElementException, exceptions.TimeoutException):
             print("no button")
             self.driver.quit()
