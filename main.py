@@ -4,9 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.common import exceptions
-
 import json
-
 
 def parse_json(json_file_path):
     with open(json_file_path, 'r') as json_file:
@@ -23,7 +21,6 @@ class SporkInstance:
         self.driver.get('https://spork.school/schedule')
         self.credentials = parse_json(json_creds_path)
 
-
     def enter_credentials(self):
         try:
             usernameField = WebDriverWait(self.driver, 10).until(ec.presence_of_element_located((By.NAME, "username")))
@@ -34,19 +31,28 @@ class SporkInstance:
             passwordField.clear()
             passwordField.send_keys(self.credentials.get("password"))
             passwordField.send_keys(Keys.ENTER)
+            
+            #wait 3 seconds for the passwordfield to stop being attached to the DOM
+            staleness = WebDriverWait(self.driver, 3).until(ec.staleness_of(passwordField))
+
+            #whether to continue, as it would produce an error if it tried to use webdriver and it quit
+            return True
         except (exceptions.NoSuchElementException, exceptions.TimeoutException):
+            print("Unable to enter credentials")
             self.driver.quit()
+            return False
 
     def click_join_button(self):
         try:
             joinButtons = WebDriverWait(self.driver, 10).until(ec.presence_of_all_elements_located((By.CSS_SELECTOR, 'button.ui.green.compact.button')))
-            for i in joinButtons:
-                i.click()
+            for button in joinButtons:
+                button.click()
         except (exceptions.NoSuchElementException, exceptions.TimeoutException):
-            print("no button")
+            print("No button to press")
             self.driver.quit()
 
 if __name__ == "__main__":
     client = SporkInstance("chromedriver.exe", False, "creds.json")
-    client.enter_credentials()
-    client.click_join_button()
+    status = client.enter_credentials()
+    if status:
+        client.click_join_button()
