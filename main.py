@@ -10,7 +10,7 @@ def parse_json(json_file_path):
     with open(json_file_path, 'r') as json_file:
         dictionary = json.load(json_file)
         return dictionary
-    
+
 class SporkInstance:
     def __init__(self, driver_path, is_headless, json_creds_path= "creds.json"):
         if is_headless:
@@ -20,7 +20,6 @@ class SporkInstance:
         self.driver = webdriver.Chrome(driver_path, options=option)
         self.driver.get('https://spork.school/schedule')
         self.credentials = parse_json(json_creds_path)
-
 
     def enter_credentials(self):
         try:
