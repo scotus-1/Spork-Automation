@@ -53,6 +53,6 @@ class SporkInstance:
 
 if __name__ == "__main__":
     client = SporkInstance("chromedriver.exe", False, "creds.json")
-    success = client.enter_credentials()
-    if (success):
+    status = client.enter_credentials()
+    if status:
         client.click_join_button()
