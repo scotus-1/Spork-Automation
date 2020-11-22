@@ -1,3 +1,11 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.common import exceptions
+import json
+
 def parse_json(json_file_path):
     with open(json_file_path, 'r') as json_file:
         dictionary = json.load(json_file)
@@ -46,7 +54,7 @@ class SporkInstance:
             self.driver.quit()
 
 if __name__ == "__main__":
-    client = SporkInstance("path", False, "creds.json")
+    client = SporkInstance("chromedriver.exe", False, "creds.json")
     success = client.enter_credentials()
     if (success):
         client.click_join_button()
