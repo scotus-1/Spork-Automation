@@ -33,7 +33,7 @@ class SporkInstance:
             passwordField.send_keys(Keys.ENTER)
             
             #wait 3 seconds for the passwordfield to stop being attached to the DOM
-            staleness = WebDriverWait(self.driver, 3).until(ec.staleness_of(passwordField))
+            staleness = WebDriverWait(self.driver, 5).until(ec.staleness_of(passwordField))
 
             #whether to continue, as it would produce an error if it tried to use webdriver and it quit
             return True
