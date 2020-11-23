@@ -12,7 +12,7 @@ def parse_json(json_file_path):
         return dictionary
 
 class SporkInstance:
-    def __init__(self, driver_path, is_headless, json_creds_path= "creds.json"):
+    def __init__(self, driver_path, is_headless, json_creds_path= 'creds.json'):
         if is_headless:
             option = webdriver.ChromeOptions()
             option.add_argument('headless')
@@ -23,22 +23,22 @@ class SporkInstance:
 
     def enter_credentials(self):
         try:
-            usernameField = WebDriverWait(self.driver, 10).until(ec.presence_of_element_located((By.NAME, "username")))
+            usernameField = WebDriverWait(self.driver, 10).until(ec.presence_of_element_located((By.NAME, 'username')))
             usernameField.clear()
-            usernameField.send_keys(self.credentials.get("username"))
+            usernameField.send_keys(self.credentials.get('username'))
             
-            passwordField = WebDriverWait(self.driver, 10).until(ec.presence_of_element_located((By.NAME, "password")))
+            passwordField = WebDriverWait(self.driver, 10).until(ec.presence_of_element_located((By.NAME, 'password')))
             passwordField.clear()
-            passwordField.send_keys(self.credentials.get("password"))
+            passwordField.send_keys(self.credentials.get('password'))
             passwordField.send_keys(Keys.ENTER)
             
             #wait 3 seconds for the passwordfield to stop being attached to the DOM
-            staleness = WebDriverWait(self.driver, 3).until(ec.staleness_of(passwordField))
+            staleness = WebDriverWait(self.driver, 5).until(ec.staleness_of(passwordField))
 
             #whether to continue, as it would produce an error if it tried to use webdriver and it quit
             return True
         except (exceptions.NoSuchElementException, exceptions.TimeoutException):
-            print("Unable to enter credentials")
+            print('Unable to enter credentials')
             self.driver.quit()
             return False
 
@@ -48,11 +48,11 @@ class SporkInstance:
             for button in joinButtons:
                 button.click()
         except (exceptions.NoSuchElementException, exceptions.TimeoutException):
-            print("No button to press")
+            print('No button to press')
             self.driver.quit()
 
-if __name__ == "__main__":
-    client = SporkInstance("chromedriver.exe", False, "creds.json")
+if __name__ == '__main__':
+    client = SporkInstance('chromedriver.exe', False, 'creds.json')
     status = client.enter_credentials()
     if status:
         client.click_join_button()
